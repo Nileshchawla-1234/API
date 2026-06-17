@@ -1,0 +1,93 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Behind-the-Score — bosley.com</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1f2b;background:#fff;line-height:1.5}
+.page{max-width:760px;margin:0 auto;padding:40px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #eef0f4;padding-bottom:18px}
+.domain{font-size:24px;font-weight:800}
+.muted{color:#6b7280;font-size:13px}
+.tier{padding:6px 12px;border-radius:999px;font-weight:800;font-size:13px}
+.tier.A{background:#fde2e2;color:#b42318}.tier.B{background:#fdf0d5;color:#b25e09}
+.tier.C,.tier.D{background:#eef0f4;color:#6b7280}
+.score{display:flex;align-items:center;gap:24px;margin:28px 0}
+.score .big{font-size:64px;font-weight:800;line-height:1}
+.gap{color:#b25e09;font-weight:600}
+h2{font-size:13px;letter-spacing:1.3px;text-transform:uppercase;color:#6b7280;margin:30px 0 12px}
+.pillar{border:1px solid #eef0f4;border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.ptop{display:flex;align-items:center;gap:10px}
+.dot{width:10px;height:10px;border-radius:50%}
+.crit{background:#e5484d}.warn{background:#e0a116}.ok{background:#30a46c}
+.bg-crit{background:#e5484d}.bg-warn{background:#e0a116}.bg-ok{background:#30a46c}
+.plabel{flex:1;font-weight:700}.pscore{color:#6b7280}
+.bar{height:7px;background:#eef0f4;border-radius:5px;overflow:hidden;margin:9px 0}
+.bar i{display:block;height:100%}
+.findings{margin:6px 0 4px 18px;font-size:13px}
+.src{color:#9aa1ad;font-size:10px;text-transform:uppercase}
+.target{color:#6b7280;font-size:12px;font-style:italic}
+.locked-grid{display:flex;gap:12px}
+.locked{flex:1;border:1px dashed #d4d8e0;border-radius:10px;padding:14px;background:#fafbfc}
+.comp{border:1px solid #eef0f4;border-radius:10px;padding:14px 16px}
+.comp li{list-style:none;padding:7px 0;border-bottom:1px solid #f1f3f7;font-size:13px}
+.chip{display:inline-block;padding:1px 7px;border-radius:6px;font-size:11px;font-weight:700;margin-right:8px;background:#eef0f4;color:#6b7280}
+.disclaimer{color:#9aa1ad;font-size:11px;border-top:1px solid #eef0f4;margin-top:10px;padding-top:8px}
+table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:7px 9px;border-bottom:1px solid #eef0f4;font-size:13px}
+.cta{margin-top:34px;padding:24px;text-align:center;background:#0b1f17;color:#fff;border-radius:14px}
+.btn{display:inline-block;margin-top:12px;padding:11px 20px;background:#30a46c;color:#fff;border-radius:9px;font-weight:700}
+.notes{border:1px dashed #d4d8e0;border-radius:10px;padding:16px;min-height:90px;color:#9aa1ad}
+.footer{color:#9aa1ad;font-size:11px;text-align:center;margin-top:24px}
+</style></head>
+<body><div class="page">
+  <div class="head">
+    <div><div class="domain">bosley.com</div>
+      <div class="muted">bosley.com · 2026-06-15</div></div>
+    <span class="tier B">Tier B</span>
+  </div>
+
+  <div class="score">
+    <div class="big">50<span style="font-size:24px;color:#9aa1ad">/100</span></div>
+    <div><div style="font-weight:600">Compounding Score</div>
+      <div class="gap">Gap to achievable: 40 (achievable 90)</div></div>
+  </div>
+
+  <h2>Five Growth Pillars</h2>
+  <div class="pillar">
+    <div class="ptop"><span class="dot warn"></span><span class="plabel">Paid Acquisition</span><span class="pscore">43/100</span></div>
+    <div class="bar"><i class="bg-warn" style="width:43%"></i></div>
+    <ul class="findings"><li>No server-side conversion signal detected <span class="src">crawl</span></li><li>No paid-conversion pixel detected <span class="src">crawl</span></li><li>No retargeting pixel detected <span class="src">crawl</span></li></ul>
+    <div class="target">What 100 looks like: full-funnel conversion tracking incl. server-side, with retargeting live.</div>
+  </div><div class="pillar">
+    <div class="ptop"><span class="dot warn"></span><span class="plabel">Search &amp; Local Presence</span><span class="pscore">62/100</span></div>
+    <div class="bar"><i class="bg-warn" style="width:62%"></i></div>
+    
+    <div class="target">What 100 looks like: ranking for non-brand commercial queries with rich local + medical schema.</div>
+  </div><div class="pillar">
+    <div class="ptop"><span class="dot ok"></span><span class="plabel">AI Visibility Readiness</span><span class="pscore">90/100</span></div>
+    <div class="bar"><i class="bg-ok" style="width:90%"></i></div>
+    <ul class="findings"><li>No FAQ/Service schema for AI answers <span class="src">crawl</span></li></ul>
+    <div class="target">What 100 looks like: AI crawlers allowed, complete schema, and an llms.txt — cited by answer engines.</div>
+  </div><div class="pillar">
+    <div class="ptop"><span class="dot crit"></span><span class="plabel">Reputation Surface</span><span class="pscore">25/100</span></div>
+    <div class="bar"><i class="bg-crit" style="width:25%"></i></div>
+    <ul class="findings"><li>Review data requires Google Business Profile enrichment (not in this scan) <span class="src">crawl</span></li></ul>
+    <div class="target">What 100 looks like: steady review velocity, fast responses, consistent ratings across platforms.</div>
+  </div><div class="pillar">
+    <div class="ptop"><span class="dot warn"></span><span class="plabel">Conversion Infrastructure</span><span class="pscore">51/100</span></div>
+    <div class="bar"><i class="bg-warn" style="width:51%"></i></div>
+    <ul class="findings"><li>No online booking widget detected <span class="src">crawl</span></li></ul>
+    <div class="target">What 100 looks like: sub-2.5s mobile LCP, frictionless booking, click-to-call above the fold.</div>
+  </div>
+
+  <h2>Reserved for your diagnostic</h2>
+  <div class="locked-grid"><div class="locked"><strong>🔒 Lead Lifecycle</strong><div class="muted">How leads are captured, routed, and followed up — measured end to end.</div></div><div class="locked"><strong>🔒 Monetization &amp; Retention</strong><div class="muted">Rebooking, LTV, and the offers that compound revenue per patient.</div></div></div>
+
+  <h2>Compliance Surface</h2><section class="comp">
+        <div style="font-size:18px;margin-bottom:10px">Risk score <strong>8</strong>/100</div>
+        <div class="muted">No high-risk tracking patterns detected on the public site.</div>
+        <div class="disclaimer">This is a structural pattern flag, not a legal determination. The Compounding Method is a marketing operations firm, not a law firm.</div>
+      </section>
+  
+  
+  
+
+  <div class="cta"><strong>See exactly what&#39;s behind your score.</strong><div class="muted" style="color:#c7d0c9">A 30-minute Behind-the-Score call walks through every pillar and the fastest path to close the gap.</div><span class="btn">Book your Behind-the-Score call</span></div>
+  <div class="footer">The Compounding Method is a marketing operations firm, not a law firm. Compliance Surface findings are structural pattern observations, not legal advice.</div>
+</div></body></html>

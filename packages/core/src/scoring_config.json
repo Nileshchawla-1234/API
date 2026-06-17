@@ -1,0 +1,11 @@
+{
+  "pillarWeights": {
+    "local":    { "paid": 0.20, "search": 0.25, "ai": 0.10, "reputation": 0.25, "conversion": 0.20 },
+    "national": { "paid": 0.25, "search": 0.30, "ai": 0.15, "reputation": 0.10, "conversion": 0.20 },
+    "ecom":     { "paid": 0.30, "search": 0.25, "ai": 0.10, "reputation": 0.15, "conversion": 0.20 }
+  },
+  "bands": { "absent": 25, "partial": 50, "solid": 72, "best": 90 },
+  "lcpMs": { "good": 2500, "ok": 4000 },
+  "achievableCap": 90,
+  "tier": { "highRisk": 60, "highGap": 40, "modRisk": 30, "modGap": 25 }
+}

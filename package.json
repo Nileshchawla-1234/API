@@ -1,0 +1,24 @@
+{
+  "name": "medspa-scanner",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["packages/*", "app", "worker"],
+  "scripts": {
+    "dev": "npm run dev -w @scanner/app",
+    "worker:dev": "npm run dev -w @scanner/worker",
+    "build": "npm run typecheck && npm run build -w @scanner/app",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "discover": "tsx worker/src/cli/discover.ts",
+    "crawl": "tsx worker/src/cli/crawl.ts",
+    "scan": "tsx worker/src/cli/scan.ts",
+    "prescan": "tsx worker/src/cli/prescan.ts",
+    "report": "tsx worker/src/cli/report.ts",
+    "verify:supabase": "tsx worker/src/cli/verify-supabase.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
