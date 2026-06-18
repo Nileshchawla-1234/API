@@ -1,0 +1,36 @@
+.root {
+  min-height: 100dvh;
+  background:
+    radial-gradient(700px 460px at 80% -10%, rgba(34, 211, 238, 0.10), transparent 60%),
+    radial-gradient(700px 520px at 5% 110%, rgba(56, 90, 197, 0.10), transparent 60%),
+    #05070d;
+  color: #e6edf6;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+.inner { max-width: 1100px; margin: 0 auto; padding: 80px 24px; width: 100%; }
+.kicker { font-family: var(--font-mono), monospace; font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: #22d3ee; margin-bottom: 16px; }
+.h1 { font-size: clamp(34px, 5vw, 58px); font-weight: 700; letter-spacing: -0.03em; margin: 0 0 10px; }
+.sub { color: #8593a8; margin: 0 0 44px; font-size: 17px; }
+
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+.card {
+  display: flex; flex-direction: column; padding: 26px 24px 22px; border-radius: 16px;
+  background: linear-gradient(180deg, rgba(16,21,33,0.7), rgba(9,13,21,0.7));
+  border: 1px solid #1a2335;
+  transition: transform .2s cubic-bezier(0.16,1,0.3,1), border-color .2s, box-shadow .2s;
+}
+.card:hover { transform: translateY(-4px); border-color: #22d3ee; box-shadow: 0 0 0 1px rgba(34,211,238,0.4), 0 24px 60px -30px rgba(34,211,238,0.5); }
+.n { font-family: var(--font-mono), monospace; font-size: 12px; color: #22d3ee; }
+.name { font-size: 22px; font-weight: 700; margin-top: 14px; letter-spacing: -0.02em; }
+.tag { font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #4b5872; margin-top: 4px; }
+.desc { color: #8593a8; font-size: 14px; line-height: 1.55; margin: 16px 0 20px; flex: 1; }
+.actions { display: flex; gap: 10px; }
+.go { flex: 1; text-align: center; padding: 11px 14px; border-radius: 9px; background: #22d3ee; color: #03121a; font-size: 14px; font-weight: 600; text-decoration: none; box-shadow: 0 0 24px -6px rgba(34,211,238,0.6); }
+.go:hover { box-shadow: 0 0 32px -4px rgba(34,211,238,0.8); }
+.goAlt { flex: 1; text-align: center; padding: 11px 14px; border-radius: 9px; border: 1px solid #243049; color: #8593a8; font-size: 14px; font-weight: 600; text-decoration: none; }
+.goAlt:hover { color: #e6edf6; border-color: #22d3ee; }
+.note { color: #4b5872; font-size: 13px; margin-top: 28px; }

@@ -1,0 +1,17 @@
+node_modules
+**/node_modules
+.next
+**/.next
+dist
+**/dist
+out
+.env
+.env.local
+*.log
+.DS_Store
+/output/reports
+**/data
+*.tsbuildinfo
+
+# prototype (reference only — not part of the deploy)
+prototype-reference
