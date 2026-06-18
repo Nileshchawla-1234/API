@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@scanner/core": ["./packages/core/src/index.ts"]
+    }
+  },
+  "include": ["packages/core/src", "worker/src"],
+  "exclude": ["node_modules", "**/dist/**", "app/.next", "prototype-reference"]
+}
