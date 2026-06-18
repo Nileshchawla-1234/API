@@ -1,0 +1,106 @@
+.root {
+  --bg: #05070d;
+  --surface: rgba(13, 18, 28, 0.72);
+  --ink: #e6edf6;
+  --muted: #8593a8;
+  --faint: #4b5872;
+  --cyan: #22d3ee;
+  --violet: #8b5cf6;
+  --green: #34d399;
+  --line: #1b2536;
+  position: relative;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow: hidden;
+  letter-spacing: -0.01em;
+}
+.root a { color: var(--cyan); }
+
+/* ── Cinematic background ───────────────────────────────────────────────── */
+.bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.horizonLine { position: absolute; left: 0; right: 0; top: 60%; height: 1px; background: var(--cyan); opacity: 0.45; filter: blur(1px); }
+.horizonGlow { position: absolute; left: 50%; top: 60%; transform: translate(-50%, -50%); width: 64%; height: 170px; border-radius: 100%; background: radial-gradient(closest-side, rgba(34,211,238,0.35), rgba(139,92,246,0.18), transparent); filter: blur(46px); }
+.gridFloor { position: absolute; left: -25%; right: -25%; top: 60%; bottom: -25%; perspective: 420px; }
+.gridFloor::before {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(34,211,238,0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34,211,238,0.22) 1px, transparent 1px);
+  background-size: 56px 56px;
+  transform: rotateX(64deg); transform-origin: top center;
+  animation: gridmove 5.5s linear infinite;
+  mask-image: linear-gradient(to bottom, transparent, #000 28%, transparent 92%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28%, transparent 92%);
+  opacity: 0.5;
+}
+@keyframes gridmove { to { background-position: 0 56px; } }
+.vignette { position: absolute; inset: 0; background: radial-gradient(125% 85% at 50% 0%, transparent 40%, var(--bg) 80%); }
+.particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+.hero { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 0 28px; min-height: 100dvh; display: flex; flex-direction: column; }
+.hud { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.hud .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); margin-right: 8px; animation: pdot 2s ease-in-out infinite; }
+@keyframes pdot { 50% { opacity: 0.4; } }
+
+.grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; flex: 1; padding-bottom: 64px; }
+@media (max-width: 940px) { .hero { min-height: auto; } .grid { grid-template-columns: 1fr; gap: 44px; padding: 30px 0 60px; } }
+
+.term { position: relative; border: 1px solid var(--line); background: var(--surface); backdrop-filter: blur(8px); padding: 16px 18px; margin-bottom: 30px; max-width: 430px; min-height: 118px; }
+.br { position: absolute; width: 11px; height: 11px; }
+.br.tl { left: -1px; top: -1px; border-left: 1px solid var(--cyan); border-top: 1px solid var(--cyan); }
+.br.tr { right: -1px; top: -1px; border-right: 1px solid var(--cyan); border-top: 1px solid var(--cyan); }
+.br.bl { left: -1px; bottom: -1px; border-left: 1px solid var(--cyan); border-bottom: 1px solid var(--cyan); }
+.br.brr { right: -1px; bottom: -1px; border-right: 1px solid var(--cyan); border-bottom: 1px solid var(--cyan); }
+.termLine { font-family: var(--font-mono), monospace; font-size: 12px; line-height: 1.7; color: var(--muted); white-space: nowrap; }
+.termLine .ok { color: var(--green); }
+.termLine.active { color: var(--cyan); }
+.termLine.active::after { content: "▋"; animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.eyebrow { font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); margin-bottom: 18px; }
+.h1 { font-size: clamp(42px, 6vw, 76px); font-weight: 700; line-height: 1.0; letter-spacing: -0.035em; margin: 0 0 20px; }
+.h1 .cyan { color: var(--cyan); text-shadow: 0 0 30px rgba(34,211,238,0.55); }
+.h1 .violet { color: var(--violet); text-shadow: 0 0 30px rgba(139,92,246,0.55); }
+.sub { color: var(--muted); font-size: clamp(16px, 1.6vw, 18px); max-width: 42ch; margin: 0 0 30px; }
+
+.form { display: flex; gap: 10px; flex-wrap: wrap; max-width: 480px; }
+.input { flex: 1; min-width: 200px; padding: 15px 16px; font-size: 15px; color: var(--ink); background: rgba(9,13,21,0.85); border: 1px solid var(--line); border-radius: 8px; outline: none; font-family: var(--font-mono), monospace; transition: border-color .2s, box-shadow .2s; }
+.input::placeholder { color: var(--faint); }
+.input:focus { border-color: var(--cyan); box-shadow: 0 0 0 1px var(--cyan), 0 0 26px rgba(34,211,238,0.15); }
+.btn { padding: 15px 26px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap; background: var(--cyan); color: #03121a; border: none; border-radius: 8px; box-shadow: 0 0 0 1px rgba(34,211,238,0.5), 0 0 30px rgba(34,211,238,0.18); transition: transform .12s, box-shadow .2s; }
+.btn:hover:not(:disabled) { box-shadow: 0 0 0 1px rgba(34,211,238,0.7), 0 0 46px rgba(34,211,238,0.5); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.err { color: #fb6f70; margin-top: 14px; font-family: var(--font-mono), monospace; font-size: 13px; }
+
+/* ── Reactor core ───────────────────────────────────────────────────────── */
+.core { position: relative; width: min(420px, 78vw); aspect-ratio: 1; margin: 0 auto; }
+.ring { position: absolute; border-radius: 50%; }
+.ring1 { inset: 0; border: 1px solid rgba(34,211,238,0.25); animation: spin 26s linear infinite; }
+.ring1::before { content: ""; position: absolute; top: -4px; left: 50%; width: 7px; height: 7px; margin-left: -3px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+.ring2 { inset: 13%; border: 1px dashed rgba(139,92,246,0.4); animation: spin 18s linear infinite reverse; }
+.ring3 { inset: 26%; border: 1px solid rgba(34,211,238,0.5); box-shadow: inset 0 0 30px rgba(34,211,238,0.15); }
+.radar { position: absolute; inset: 26%; border-radius: 50%; overflow: hidden; }
+.radar::before { content: ""; position: absolute; inset: 0; background: conic-gradient(from 0deg, transparent 0deg, rgba(34,211,238,0.35) 40deg, transparent 80deg); animation: spin 3.2s linear infinite; }
+.coreCenter { position: absolute; inset: 38%; border-radius: 50%; background: radial-gradient(circle, rgba(34,211,238,0.22), rgba(5,7,13,0.9)); border: 1px solid rgba(34,211,238,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 0 40px rgba(34,211,238,0.3); }
+.corePct { font-size: clamp(26px, 4vw, 38px); font-weight: 800; line-height: 1; }
+.coreStage { font-family: var(--font-mono), monospace; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); margin-top: 4px; }
+.core.running .ring1 { animation-duration: 8s; }
+.core.running .radar::before { animation-duration: 1.4s; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Pillar HUD strip ───────────────────────────────────────────────────── */
+.strip { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 0 28px 90px; }
+.stripGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.cell { position: relative; border: 1px solid var(--line); background: var(--surface); padding: 18px 16px; }
+.cell .cn { font-family: var(--font-mono), monospace; font-size: 11px; color: var(--cyan); }
+.cell .ct { font-weight: 600; margin-top: 8px; font-size: 15px; }
+.cell .cd { color: var(--muted); font-size: 12px; margin-top: 4px; }
+@media (max-width: 940px) { .stripGrid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .stripGrid { grid-template-columns: 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gridFloor::before, .hud .dot, .ring1, .ring2, .radar::before, .termLine.active::after { animation: none; }
+}
