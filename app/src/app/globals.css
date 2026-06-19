@@ -48,6 +48,51 @@ a { color: var(--accent); text-decoration: none; }
 }
 @keyframes beam { 0% { top: -260px; } 100% { top: 110%; } }
 
+/* ── Scan field: topographic mesh + schematic margins (full-bleed bg) ────── */
+.scan-field { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.field-mesh { position: absolute; inset: 0; width: 100%; height: 100%; }
+.field-topo { fill: none; stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 10 8; animation: fieldTopo 24s linear infinite; }
+@keyframes fieldTopo { to { stroke-dashoffset: -72; } }
+/* center safe-zone: the mesh fades behind the hero + console so text stays crisp */
+.field-fade { position: absolute; inset: 0; background: radial-gradient(840px 520px at 42% 50%, var(--bg) 0%, rgba(5, 7, 13, 0.72) 36%, transparent 76%); }
+.field-marks span { position: absolute; }
+.field-corner { width: 16px; height: 16px; opacity: 0.5; }
+.field-corner.tl { border-top: 1.5px solid var(--muted); border-left: 1.5px solid var(--muted); }
+.field-corner.tr { border-top: 1.5px solid var(--muted); border-right: 1.5px solid var(--muted); }
+.field-corner.bl { border-bottom: 1.5px solid var(--muted); border-left: 1.5px solid var(--muted); }
+.field-corner.br { border-bottom: 1.5px solid var(--muted); border-right: 1.5px solid var(--muted); }
+.field-coord { font-family: var(--font-mono), monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--faint); }
+.field-coord.r { color: var(--muted); }
+.field-x { width: 14px; height: 14px; }
+.field-x::before, .field-x::after { content: ""; position: absolute; background: var(--faint); }
+.field-x::before { left: 50%; top: 0; width: 1.4px; height: 100%; transform: translateX(-50%); }
+.field-x::after { top: 50%; left: 0; height: 1.4px; width: 100%; transform: translateY(-50%); }
+.field-x.live::before, .field-x.live::after { background: var(--accent); box-shadow: 0 0 6px var(--glow); }
+.field-x.live { animation: fieldLive 2.6s ease-in-out infinite; }
+@keyframes fieldLive { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+/* lab-apparatus variant (?bg=lab) — small pieces anchored in the corners */
+.lab-piece { position: absolute; height: auto; pointer-events: auto; cursor: crosshair; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.lab-flask { top: 54px; left: 40px; width: 112px; }
+.lab-rack { bottom: 46px; left: 46px; width: 148px; }
+.lab-beaker { bottom: 46px; right: 48px; width: 90px; }
+/* react on hover: brighten, glow, lift slightly, quicken the bubbles */
+.lab-piece:hover { transform: scale(1.06); }
+.lab-piece:hover .lab-glass { opacity: 0.95; stroke-width: 2.3; filter: drop-shadow(0 0 11px var(--glow)); }
+.lab-piece:hover .lab-liquid { opacity: 0.24; }
+.lab-piece:hover .lab-meniscus { opacity: 0.75; }
+.lab-piece:hover .lab-bubble { animation-duration: 1.1s; }
+@media (prefers-reduced-motion: reduce) { .lab-piece { transition: none; } .lab-piece:hover { transform: none; } }
+.lab-glass { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0.4; filter: drop-shadow(0 0 6px var(--glow-soft)); transition: opacity 0.35s ease, stroke-width 0.35s ease, filter 0.35s ease; }
+.lab-rim { fill: none; stroke: var(--accent); stroke-width: 2; opacity: 0.28; }
+.lab-liquid { fill: var(--accent); opacity: 0.12; }
+.lab-meniscus { stroke: var(--accent); stroke-width: 2; opacity: 0.4; }
+.lab-bubble { fill: var(--accent); opacity: 0; transform-box: fill-box; transform-origin: center; animation: labBub 3s ease-in infinite; }
+@keyframes labBub { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 15% { opacity: 0.7; } 100% { transform: translateY(-16px) scale(1); opacity: 0; } }
+.lab-drop { fill: var(--accent); transform-box: fill-box; animation: labDrop 2.6s ease-in infinite; }
+@keyframes labDrop { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 1; } 58% { transform: translateY(34px); opacity: 1; } 70% { opacity: 0; } 100% { transform: translateY(34px); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) { .field-topo, .field-x.live, .lab-bubble, .lab-drop { animation: none; } }
+
 /* ── Reveal-on-load ─────────────────────────────────────────────────────── */
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 .reveal { animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
@@ -91,8 +136,19 @@ h1 { font-size: clamp(38px, 5.4vw, 66px); font-weight: 700; margin: 0 0 18px; li
 
 /* ── Hero (asymmetric split) ────────────────────────────────────────────── */
 .hero { max-width: 1180px; margin: 0 auto; padding: 0 24px; min-height: 100dvh; display: flex; align-items: center; }
-.hero-grid { display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 60px; align-items: center; width: 100%; padding: 96px 0; }
-.hero-left { max-width: 560px; }
+.hero-grid { position: relative; display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 60px; align-items: center; width: 100%; padding: 96px 0; }
+
+/* hero video — sits in the gap between the headline and the panel, autoplay loop */
+.hero-video { position: absolute; top: 41%; left: 56%; transform: translate(-50%, -50%); width: clamp(190px, 18vw, 290px); aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; border: 1px solid var(--border-2); box-shadow: 0 24px 60px -40px rgba(0,0,0,0.8), 0 0 50px -30px var(--glow); pointer-events: none; z-index: 1; }
+@media (max-width: 920px) { .hero-video { display: none; } }
+.hero-left { max-width: 560px; min-width: 0; }
+
+/* panel-right variant (?panel=right): move ONLY the panel toward the right edge.
+   Everything else (title, search, layout) stays exactly where it is. The panel
+   is already position:relative, so `left` offsets it visually with no reflow;
+   clamp keeps a safe gap from the viewport edge so it never overflows. */
+.hero--wide .console { left: clamp(0px, calc(50vw - 590px - 32px), 200px); }
+@media (max-width: 920px) { .hero--wide .console { left: 0; } }
 @media (max-width: 920px) {
   .hero { min-height: auto; }
   .hero-grid { grid-template-columns: 1fr; gap: 36px; padding: 88px 0 56px; }
@@ -104,7 +160,9 @@ h1 { font-size: clamp(38px, 5.4vw, 66px); font-weight: 700; margin: 0 0 18px; li
   background: linear-gradient(180deg, rgba(16, 21, 33, 0.9), rgba(9, 13, 21, 0.9));
   border: 1px solid var(--border-2);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 30px 80px -40px rgba(0,0,0,0.8), 0 0 60px -30px var(--glow);
-  padding: 22px 22px 18px;
+  padding: 18px 22px 14px;
+  width: 330px;
+  justify-self: end;
 }
 .console-scan { /* ambient sweep inside the panel */
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 90px;
@@ -112,7 +170,7 @@ h1 { font-size: clamp(38px, 5.4vw, 66px); font-weight: 700; margin: 0 0 18px; li
   animation: cscan 4.2s ease-in-out infinite; pointer-events: none;
 }
 @keyframes cscan { 0% { transform: translateY(-90px); } 100% { transform: translateY(420px); } }
-.console-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; margin-bottom: 6px; border-bottom: 1px solid var(--border); }
+.console-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 11px; margin-bottom: 2px; border-bottom: 1px solid var(--border); }
 .console-title { font-family: var(--font-mono), monospace; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
 .console-status { font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; color: var(--faint); }
 .console-status .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
@@ -120,7 +178,7 @@ h1 { font-size: clamp(38px, 5.4vw, 66px); font-weight: 700; margin: 0 0 18px; li
 .console.running .console-status .sdot { background: var(--accent); box-shadow: 0 0 10px var(--glow); animation: blink 1s steps(2) infinite; }
 @keyframes blink { 50% { opacity: 0.35; } }
 
-.crow { display: grid; grid-template-columns: 26px 1fr; gap: 14px; align-items: start; padding: 13px 0; }
+.crow { display: grid; grid-template-columns: 26px 1fr; gap: 14px; align-items: start; padding: 8px 0; }
 .crow + .crow { border-top: 1px solid rgba(26, 35, 53, 0.6); }
 .crow-rail { display: flex; flex-direction: column; align-items: center; }
 .crow-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono), monospace; font-size: 10px; color: var(--faint); background: var(--panel-2); border: 1px solid var(--border-2); transition: all .35s; }
@@ -134,7 +192,7 @@ h1 { font-size: clamp(38px, 5.4vw, 66px); font-weight: 700; margin: 0 0 18px; li
 .crow.active .crow-desc { color: var(--muted); }
 @keyframes cpulse { 0%,100% { box-shadow: 0 0 0 4px var(--glow-soft), 0 0 16px var(--glow); } 50% { box-shadow: 0 0 0 7px transparent, 0 0 26px var(--glow); } }
 
-.console-foot { margin-top: 14px; }
+.console-foot { margin-top: 10px; }
 .console-rail { height: 3px; border-radius: 3px; background: var(--panel-2); overflow: hidden; }
 .console-rail i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent-dim, #0e7a8a), var(--accent)); box-shadow: 0 0 12px var(--glow); transition: width .6s cubic-bezier(0.16,1,0.3,1); }
 .console-foot .meta { font-family: var(--font-mono), monospace; font-size: 10.5px; color: var(--faint); margin-top: 8px; letter-spacing: 0.5px; }
@@ -188,6 +246,46 @@ h1 { font-size: clamp(38px, 5.4vw, 66px); font-weight: 700; margin: 0 0 18px; li
 .cwv th { color: var(--muted); font-weight: 600; font-family: var(--font-mono), monospace; font-size: 12px; }
 .cta { margin-top: 42px; padding: 30px; text-align: center; background: radial-gradient(120% 140% at 50% 0%, rgba(34,211,238,.12), transparent 70%), var(--panel); border: 1px solid var(--border); border-radius: 14px; }
 .cta .btn { margin-top: 14px; } .footer-disc { color: var(--muted); font-size: 12px; margin-top: 28px; text-align: center; }
+
+/* ── FX: word reveal · magnetic CTA · pointer-glow console ──────────────── */
+/* Each word rises + fades in, staggered, on the Expo-out curve. The mask-free
+   variant: no descender clipping, no jitter. */
+.rt-word { display: inline-block; }
+.rt-inner { display: inline-block; opacity: 0; transform: translateY(26px); animation-name: rtRise; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); animation-fill-mode: both; }
+@keyframes rtRise { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .rt-inner { animation: none; opacity: 1; transform: none; }
+}
+
+/* The CSS transition eases each raw transform we set on mousemove, so the
+   button trails the cursor instead of snapping (craft-lab microinteractions). */
+.btn.magnetic { transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s; will-change: transform; }
+.btn .btn-label { display: inline-block; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
+
+.console-glow {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; border-radius: inherit;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), rgba(34, 211, 238, 0.12), transparent 62%);
+  transition: opacity 0.4s ease;
+}
+.console:hover .console-glow { opacity: 1; }
+/* Keep panel content above the glow layer. */
+.console > .console-head, .console > .crow, .console > .console-foot { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .console-glow { display: none; }
+  .btn.magnetic, .btn .btn-label { transition: none; }
+}
+
+/* ── Precision reticles (framing the scan-engine panel) ─────────────────── */
+.reticles { position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit; }
+.reticles i { position: absolute; width: 14px; height: 14px; opacity: 0.5; }
+.reticles i:nth-child(1) { top: 10px; left: 10px; border-top: 1.5px solid var(--muted); border-left: 1.5px solid var(--muted); }
+.reticles i:nth-child(3) { bottom: 10px; left: 10px; border-bottom: 1.5px solid var(--muted); border-left: 1.5px solid var(--muted); }
+.reticles i:nth-child(4) { bottom: 10px; right: 10px; border-bottom: 1.5px solid var(--muted); border-right: 1.5px solid var(--muted); }
+/* one live reticle, glowing cyan */
+.reticles i:nth-child(2) { top: 10px; right: 10px; opacity: 1; border-top: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent); filter: drop-shadow(0 0 5px var(--glow)); animation: retPulse 2.6s ease-in-out infinite; }
+@keyframes retPulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .reticles i:nth-child(2) { animation: none; } }
 
 /* ── Admin (kept simple) ────────────────────────────────────────────────── */
 .wrap { max-width: 880px; margin: 0 auto; padding: 64px 24px 100px; position: relative; }
