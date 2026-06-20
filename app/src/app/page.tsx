@@ -130,7 +130,7 @@ export default function Home() {
             {running && (
               <div className="hero-wait" role="status" aria-live="polite">
                 <span className="hw-dot" aria-hidden />
-                Scanning{domain ? ` ${domain}` : ""}. Your Behind-the-Score report is on its way.
+                Scanning… Your Behind-the-Score report is on its way.
               </div>
             )}
           </div>
@@ -154,7 +154,7 @@ export default function Home() {
             })}
             <div className="console-foot">
               <div className="console-rail"><i style={{ width: `${progress}%` }} /></div>
-              <div className="meta">{running ? `Scanning ${domain || "target"}…` : "Awaiting target"}</div>
+              <div className="meta">{running ? "Scanning…" : "Awaiting target"}</div>
             </div>
           </div>
         </div>
