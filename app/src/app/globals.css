@@ -139,8 +139,18 @@ h1 { font-size: clamp(38px, 5.4vw, 66px); font-weight: 700; margin: 0 0 18px; li
 .hero-grid { position: relative; display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 60px; align-items: center; width: 100%; padding: 96px 0; }
 
 /* hero video — sits in the gap between the headline and the panel, autoplay loop */
-.hero-video { position: absolute; top: 41%; left: 56%; transform: translate(-50%, -50%); width: clamp(190px, 18vw, 290px); aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; border: 1px solid var(--border-2); box-shadow: 0 24px 60px -40px rgba(0,0,0,0.8), 0 0 50px -30px var(--glow); pointer-events: none; z-index: 1; }
-@media (max-width: 920px) { .hero-video { display: none; } }
+/* video + wait note stack as one unit centered in the gap — message can never
+   drift toward the panel because it shares the video's exact width */
+.hero-media { position: absolute; top: 41%; left: 56%; transform: translate(-50%, -50%); width: clamp(190px, 18vw, 290px); z-index: 2; }
+.hero-video { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; border: 1px solid var(--border-2); box-shadow: 0 24px 60px -40px rgba(0,0,0,0.8), 0 0 50px -30px var(--glow); pointer-events: none; }
+@media (max-width: 920px) { .hero-media { display: none; } }
+
+/* "please wait" note — sits directly under the video while a scan runs */
+.hero-wait { position: absolute; top: calc(100% + 14px); left: 0; width: 100%;
+  display: flex; align-items: flex-start; justify-content: center; gap: 8px; text-align: center;
+  font-family: var(--font-mono), monospace; font-size: 12px; line-height: 1.55; letter-spacing: 0.3px; color: var(--accent);
+  animation: rise 0.4s ease both; }
+.hw-dot { flex: none; width: 7px; height: 7px; margin-top: 5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--glow); animation: blink 1s steps(2) infinite; }
 .hero-left { max-width: 560px; min-width: 0; }
 
 /* panel-right variant (?panel=right): move ONLY the panel toward the right edge.

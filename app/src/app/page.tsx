@@ -31,7 +31,7 @@ export default function Home() {
   const finished = useRef(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
-  const [bg, setBg] = useState<"mesh" | "lab">("mesh");
+  const [bg, setBg] = useState<"mesh" | "lab">("lab");
   const [panel, setPanel] = useState<"" | "right">("");
   useEffect(() => {
     const p = new URLSearchParams(window.location.search);
@@ -123,9 +123,17 @@ export default function Home() {
             {error && <p className="error">{error}</p>}
           </div>
 
-          <video className="hero-video" autoPlay muted loop playsInline preload="auto" aria-hidden="true">
-            <source src="/hero-lab.mp4" type="video/mp4" />
-          </video>
+          <div className="hero-media">
+            <video className="hero-video" autoPlay muted loop playsInline preload="auto" aria-hidden="true">
+              <source src="/hero-lab.mp4" type="video/mp4" />
+            </video>
+            {running && (
+              <div className="hero-wait" role="status" aria-live="polite">
+                <span className="hw-dot" aria-hidden />
+                Scanning{domain ? ` ${domain}` : ""}. Your Behind-the-Score report is on its way.
+              </div>
+            )}
+          </div>
 
           <div ref={consoleRef} onMouseMove={consoleGlow} className={`console reveal d3 ${running ? "running" : ""}`}>
             <div className="console-glow" aria-hidden />
