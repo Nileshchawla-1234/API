@@ -19,4 +19,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
-// build trigger: refresh Preview env (BACKEND=supabase)
+// build trigger v2: BACKEND=supabase now set in Preview env
