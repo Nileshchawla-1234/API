@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getStore } from "@scanner/core";
 import type { ClientPayload } from "@scanner/core";
 import { ReportView, type ReportStyles } from "../../_report/ReportView";
+import { ScanField } from "../../_fx/ScanField";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,5 +23,10 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
   const { slug } = await params;
   const payload = (await getStore().getReportBySlug(slug)) as ClientPayload | null;
   if (!payload) notFound();
-  return <ReportView payload={payload} styles={v1} />;
+  return (
+    <>
+      <ScanField variant="lab" />
+      <ReportView payload={payload} styles={v1} />
+    </>
+  );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import type { ClientPayload, PillarKind } from "@scanner/core";
 
 const PILLAR_LABEL: Record<PillarKind, string> = {
@@ -17,6 +19,13 @@ export type ReportStyles = Record<string, string>;
 
 export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; styles: ReportStyles }) {
   const cx = (...k: string[]) => k.map((x) => s[x] || "").join(" ").trim();
+  // cursor-tracking glow for the big cards (pairs with the ::before in globals.css)
+  const glow = (e: React.MouseEvent<HTMLElement>) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+    el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+  };
   return (
     <main className={s.root}>
       {s.bg ? <div className={s.bg} aria-hidden /> : null}
@@ -43,7 +52,7 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
 
         <h2 className={s.h2}>Five Growth Pillars</h2>
         {p.pillars.map((pl) => (
-          <div className={s.pillar} key={pl.key}>
+          <div className={s.pillar} key={pl.key} onMouseMove={glow}>
             <div className={s.pillarTop}>
               <span className={cx("rag", `rag_${pl.rag}`)} />
               <span className={s.pillarLabel}>{PILLAR_LABEL[pl.key] ?? pl.key}</span>
@@ -70,7 +79,7 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
         </div>
 
         <h2 className={s.h2}>Compliance Surface</h2>
-        <section className={s.compliance}>
+        <section className={s.compliance} onMouseMove={glow}>
           <div className={s.risk}>Risk score <strong>{p.compliance.risk}</strong>/100</div>
           {p.compliance.intro ? <div className={s.meta} style={{ marginBottom: 12, fontSize: 13 }}>{p.compliance.intro}</div> : null}
           {p.compliance.rows.length > 0 ? (
@@ -104,7 +113,7 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
           </>
         )}
 
-        <section className={s.cta}>
+        <section className={s.cta} onMouseMove={glow}>
           <strong>{p.cta.headline}</strong>
           <div className={s.meta}>{p.cta.body}</div>
           <button className={s.ctaBtn}>{p.cta.button}</button>

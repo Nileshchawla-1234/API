@@ -257,6 +257,19 @@ h1 { font-size: clamp(38px, 5.4vw, 66px); font-weight: 700; margin: 0 0 18px; li
 .cta { margin-top: 42px; padding: 30px; text-align: center; background: radial-gradient(120% 140% at 50% 0%, rgba(34,211,238,.12), transparent 70%), var(--panel); border: 1px solid var(--border); border-radius: 14px; }
 .cta .btn { margin-top: 14px; } .footer-disc { color: var(--muted); font-size: 12px; margin-top: 28px; text-align: center; }
 
+/* ── Report card hover: lift + cyan border-glow (A) + cursor-tracking glow (B) ── */
+.pillar, .locked, .compliance, .cta { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease; }
+.pillar:hover, .locked:hover, .compliance:hover { transform: translateY(-2px); border-color: var(--border-2); box-shadow: 0 0 0 1px var(--glow-soft), 0 18px 44px -30px rgba(0, 0, 0, 0.85), 0 0 40px -26px var(--glow); }
+.cta:hover { box-shadow: 0 0 0 1px var(--glow-soft), 0 0 48px -24px var(--glow); }
+/* cursor-tracking glow on the big boxes */
+.pillar, .compliance, .cta { position: relative; }
+.pillar::before, .compliance::before, .cta::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(34, 211, 238, 0.09), transparent 60%); transition: opacity 0.35s ease; }
+.pillar:hover::before, .compliance:hover::before, .cta:hover::before { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .pillar, .locked, .compliance, .cta { transition: none; }
+  .pillar:hover, .locked:hover, .compliance:hover { transform: none; }
+}
+
 /* ── FX: word reveal · magnetic CTA · pointer-glow console ──────────────── */
 /* Each word rises + fades in, staggered, on the Expo-out curve. The mask-free
    variant: no descender clipping, no jitter. */
