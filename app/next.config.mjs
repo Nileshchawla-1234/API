@@ -19,3 +19,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
+// build trigger: refresh Preview env (BACKEND=supabase)
