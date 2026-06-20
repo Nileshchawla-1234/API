@@ -81,17 +81,17 @@ function pillarFindings(kind: PillarKind, i: ComposeInput): { text: string; sour
 function complianceRows(c: ComplianceSurface): ClientPayload["compliance"]["rows"] {
   const rows: ClientPayload["compliance"]["rows"] = [];
   if (c.tier1.phi_context_pixel_detected)
-    rows.push({ signal: "Potential PHI context: ad pixel on a treatment/intake page", observed: "present", tier: 1, confidence: c.tier1.phi_context_conf });
+    rows.push({ signal: "Ad pixel on a treatment / intake page", observed: "potential PHI context", tier: 1, confidence: c.tier1.phi_context_conf, why: "Pages about specific treatments may be sharing visitor interest with ad platforms — worth a privacy review." });
   if (!c.tier1.cookie_consent_detected)
-    rows.push({ signal: "No cookie-consent platform detected", observed: "absent", tier: 1, confidence: "medium" });
+    rows.push({ signal: "No cookie-consent banner found", observed: "absent", tier: 1, confidence: "medium", why: "Tracking likely runs before visitors are asked to agree." });
   if (!c.tier1.privacy_policy_addresses_tracking)
-    rows.push({ signal: "Privacy policy does not clearly address tracking", observed: "unclear", tier: 1, confidence: "low" });
+    rows.push({ signal: "Privacy policy doesn't clearly mention tracking", observed: "unclear", tier: 1, confidence: "low", why: "The policy may not disclose the tracking the site actually uses." });
   if (!c.tier2.https_enforced)
-    rows.push({ signal: "HTTPS/HSTS not fully enforced", observed: "partial", tier: 2, confidence: "medium" });
+    rows.push({ signal: "Secure connection not fully enforced", observed: "partial", tier: 2, confidence: "medium", why: "Some visits may not be fully encrypted." });
   if (c.tier2.phone_form_present && !c.tier2.tcpa_opt_in_language_detected)
-    rows.push({ signal: "Phone form without TCPA opt-in language", observed: "present", tier: 2, confidence: "medium" });
+    rows.push({ signal: "Phone form without clear opt-in wording", observed: "present", tier: 2, confidence: "medium", why: "Phone numbers are collected without visible consent text." });
   if (c.tier2.accessibility_below_threshold)
-    rows.push({ signal: "Accessibility below threshold", observed: `score ${c.tier2.accessibility_score}`, tier: 2, confidence: "high" });
+    rows.push({ signal: "Accessibility below the recommended level", observed: `score ${c.tier2.accessibility_score}`, tier: 2, confidence: "high", why: "Parts of the site may be hard to use for some visitors." });
   return rows;
 }
 
@@ -143,8 +143,8 @@ export function composeReport(input: ComposeInput): ComposeResult {
     },
     cwv: cwvRows(input.speed),
     cta: {
-      headline: "See exactly what's behind your score.",
-      body: "A 30-minute Behind-the-Score call walks through every pillar and the fastest path to close the gap.",
+      headline: "See the full picture behind your score.",
+      body: "Book a free 30-minute Behind-the-Score call — we'll walk through every pillar of your report and where the biggest gains are.",
       button: "Book your Behind-the-Score call",
     },
     footer_disclaimer: FOOTER_DISCLAIMER,

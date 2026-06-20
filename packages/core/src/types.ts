@@ -123,7 +123,7 @@ export interface ClientPayload {
   locked: { name: string; tease: string }[];
   compliance: {
     risk: number;
-    rows: { signal: string; observed: string; tier: 1 | 2; confidence: Confidence }[];
+    rows: { signal: string; observed: string; tier: 1 | 2; confidence: Confidence; why?: string }[];
     disclaimer: string;
   };
   cwv: { metric: string; good: string; actual: string }[];

@@ -8,6 +8,9 @@ const PILLAR_LABEL: Record<PillarKind, string> = {
   conversion: "Conversion Infrastructure",
 };
 
+// Plain-language names for legacy reports saved with raw metric codes.
+const CWV_LABEL: Record<string, string> = { LCP: "Mobile load speed", INP: "Tap response", CLS: "Visual stability" };
+
 // A style map: the same keys, supplied either as global class strings (V1) or a
 // CSS module (V2/V3). One renderer, three themes.
 export type ReportStyles = Record<string, string>;
@@ -75,6 +78,7 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
                 <li key={i}>
                   <span className={cx("chip", `chip_t${r.tier}`)}>T{r.tier}</span>
                   {r.signal}: <em>{r.observed}</em> <span className={s.conf}>({r.confidence} confidence)</span>
+                  {r.why ? <div className={s.meta} style={{ marginTop: 3, fontSize: 12.5 }}>{r.why}</div> : null}
                 </li>
               ))}
             </ul>
@@ -90,7 +94,7 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
             <table className={s.cwv}>
               <thead><tr><th>Measure</th><th>Good</th><th>Yours</th></tr></thead>
               <tbody>
-                {p.cwv.map((c, i) => (<tr key={i}><td>{c.metric}</td><td className={s.meta}>{c.good}</td><td><strong>{c.actual}</strong></td></tr>))}
+                {p.cwv.map((c, i) => (<tr key={i}><td>{CWV_LABEL[c.metric] ?? c.metric}</td><td className={s.meta}>{c.good}</td><td><strong>{c.actual}</strong></td></tr>))}
               </tbody>
             </table>
             <div className={s.meta} style={{ fontSize: 12, marginTop: 8 }}>
