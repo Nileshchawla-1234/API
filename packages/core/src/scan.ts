@@ -1,6 +1,7 @@
 import { crawl } from "./collect/crawl";
 import { getSpeed } from "./collect/speed";
 import { enrichSpyFu } from "./collect/spyfu";
+import { extractOrg } from "./collect/org";
 import { detectSignals } from "./detect/signals";
 import { inferPaid } from "./detect/paid";
 import { detectCompliance } from "./detect/compliance";
@@ -56,8 +57,12 @@ export async function scanDomain(domain: string, opts: ScanOptions = {}): Promis
   const { pillars, scores } = score({ business_type, signals, speed, extras }, compliance);
 
   const scanDate = new Date().toISOString();
+  // Business name + location from the site's own schema (omitted if not published).
+  const org = extractOrg(crawled);
   const { client_payload, internal_payload } = composeReport({
     domain: crawled.domain,
+    business_name: org.name,
+    location: org.location,
     scanDate,
     signals,
     speed,
@@ -73,7 +78,7 @@ export async function scanDomain(domain: string, opts: ScanOptions = {}): Promis
     domain: crawled.domain,
     vertical: "medspa",
     business_type,
-    geo: null,
+    geo: org.location ?? null,
     status: crawled.pages.length > 0 ? "complete" : "partial",
     source: opts.source ?? "public",
     scores,
