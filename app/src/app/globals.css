@@ -30,7 +30,7 @@ body {
 a { color: var(--accent); text-decoration: none; }
 
 /* ── Site-wide cinematic background ──────────────────────────────────────── */
-.site-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--bg); }
+.site-bg { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--bg); }
 .site-bg::before { /* aurora + grid */
   content: ""; position: absolute; inset: -10%;
   background:
