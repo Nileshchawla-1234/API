@@ -57,13 +57,10 @@ function pillarFindings(kind: PillarKind, i: ComposeInput): { text: string; sour
     if (!s.has_server_side_signal) add("No server-side conversion signal detected", "crawl");
     if (!s.has_meta_pixel && !s.has_google_ads_conv) add("No paid-conversion pixel detected", "crawl");
     if (!s.has_retargeting) add("No retargeting pixel detected", "crawl");
-    if (s.spyfu?.coverage && s.spyfu.coverage !== "none" && s.spyfu.paid)
-      add(`Estimated paid keywords: ${s.spyfu.paid.paid_keywords}`, "SpyFu");
   } else if (kind === "search") {
     if (!s.schema_types.some((t) => /localbusiness|medical/i.test(t)))
       add("Missing the local-business markup Google looks for", "crawl");
-    if (s.spyfu?.organic) add(`Estimated organic keywords: ${s.spyfu.organic.organic_keywords}`, "SpyFu");
-    if (i.speed?.mobile.seo != null) add(`PageSpeed SEO score: ${i.speed.mobile.seo}/100`, "PageSpeed");
+    if (i.speed?.mobile.seo != null) add(`Search-readiness score: ${i.speed.mobile.seo}/100`, "PageSpeed");
   } else if (kind === "ai") {
     if (s.robots_blocks_ai) add("Your site blocks AI engines (e.g. GPT Bot) from reading it", "crawl");
     if (!s.llms_txt) add("No llms.txt present (helps AI engines understand the site)", "crawl");
@@ -179,13 +176,6 @@ export function composeReport(input: ComposeInput): ComposeResult {
     },
     footer_disclaimer: FOOTER_DISCLAIMER,
   };
-
-  if (input.signals.spyfu?.coverage && input.signals.spyfu.coverage !== "none" && input.signals.spyfu.competitors?.length) {
-    client_payload.competitors = {
-      source: "SpyFu (estimated)",
-      rows: input.signals.spyfu.competitors.map((c) => ({ name: c.domain, est_traffic: c.est_traffic, overlap: c.overlap })),
-    };
-  }
 
   // internal_payload: everything the gate forbids in client_payload.
   const internal_payload = {
