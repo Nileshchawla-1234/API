@@ -72,6 +72,7 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
         <h2 className={s.h2}>Compliance Surface</h2>
         <section className={s.compliance}>
           <div className={s.risk}>Risk score <strong>{p.compliance.risk}</strong>/100</div>
+          {p.compliance.intro ? <div className={s.meta} style={{ marginBottom: 12, fontSize: 13 }}>{p.compliance.intro}</div> : null}
           {p.compliance.rows.length > 0 ? (
             <ul className={s.compRows}>
               {p.compliance.rows.map((r, i) => (
@@ -107,6 +108,7 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
           <strong>{p.cta.headline}</strong>
           <div className={s.meta}>{p.cta.body}</div>
           <button className={s.ctaBtn}>{p.cta.button}</button>
+          {p.cta.note ? <div className={s.meta} style={{ marginTop: 10, fontSize: 12.5 }}>{p.cta.note}</div> : null}
         </section>
 
         <div className={s.footer}>{p.footer_disclaimer}</div>

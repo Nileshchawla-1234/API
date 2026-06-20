@@ -123,13 +123,14 @@ export interface ClientPayload {
   locked: { name: string; tease: string }[];
   compliance: {
     risk: number;
+    intro?: string;
     rows: { signal: string; observed: string; tier: 1 | 2; confidence: Confidence; why?: string }[];
     disclaimer: string;
   };
   cwv: { metric: string; good: string; actual: string }[];
   competitors?: { source: string; rows: Record<string, unknown>[] };
   ai_citations?: { scope: string; rows: Record<string, unknown>[] };
-  cta: { headline: string; body: string; button: string };
+  cta: { headline: string; body: string; button: string; note?: string };
   footer_disclaimer: string;
 }
 
