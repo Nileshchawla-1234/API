@@ -28,7 +28,6 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
               {p.header.location ? ` · ${p.header.location}` : ""} · {p.header.scan_date.slice(0, 10)}
             </div>
           </div>
-          <span className={cx("tier", `tier_${p.header.tier}`)}>Tier {p.header.tier}</span>
         </header>
 
         <section className={s.scoreWrap}>
@@ -53,7 +52,6 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
                 {pl.findings.map((f, i) => (<li key={i}>{f.text} <span className={s.src}>{f.source}</span></li>))}
               </ul>
             )}
-            <div className={s.target}>{pl.target}</div>
           </div>
         ))}
 
@@ -88,13 +86,16 @@ export function ReportView({ payload: p, styles: s }: { payload: ClientPayload; 
 
         {p.cwv.length > 0 && (
           <>
-            <h2 className={s.h2}>Core Web Vitals</h2>
+            <h2 className={s.h2}>Site Speed &amp; Stability</h2>
             <table className={s.cwv}>
-              <thead><tr><th>Metric</th><th>Good</th><th>Yours</th></tr></thead>
+              <thead><tr><th>Measure</th><th>Good</th><th>Yours</th></tr></thead>
               <tbody>
                 {p.cwv.map((c, i) => (<tr key={i}><td>{c.metric}</td><td className={s.meta}>{c.good}</td><td><strong>{c.actual}</strong></td></tr>))}
               </tbody>
             </table>
+            <div className={s.meta} style={{ fontSize: 12, marginTop: 8 }}>
+              Measured on a typical mobile connection — your own phone on Wi-Fi may feel faster.
+            </div>
           </>
         )}
 

@@ -61,18 +61,18 @@ function pillarFindings(kind: PillarKind, i: ComposeInput): { text: string; sour
       add(`Estimated paid keywords: ${s.spyfu.paid.paid_keywords}`, "SpyFu");
   } else if (kind === "search") {
     if (!s.schema_types.some((t) => /localbusiness|medical/i.test(t)))
-      add("No LocalBusiness/Medical schema detected", "crawl");
+      add("Missing the local-business markup Google looks for", "crawl");
     if (s.spyfu?.organic) add(`Estimated organic keywords: ${s.spyfu.organic.organic_keywords}`, "SpyFu");
     if (i.speed?.mobile.seo != null) add(`PageSpeed SEO score: ${i.speed.mobile.seo}/100`, "PageSpeed");
   } else if (kind === "ai") {
-    if (s.robots_blocks_ai) add("robots.txt blocks one or more AI crawlers", "crawl");
-    if (!s.llms_txt) add("No llms.txt present", "crawl");
-    if (!s.schema_types.some((t) => /faqpage|service/i.test(t))) add("No FAQ/Service schema for AI answers", "crawl");
+    if (s.robots_blocks_ai) add("Your site blocks AI engines (e.g. GPT Bot) from reading it", "crawl");
+    if (!s.llms_txt) add("No llms.txt present (helps AI engines understand the site)", "crawl");
+    if (!s.schema_types.some((t) => /faqpage|service/i.test(t))) add("No FAQ content for AI engines to quote", "crawl");
   } else if (kind === "reputation") {
     add("Review data requires Google Business Profile enrichment (not in this scan)", "crawl");
   } else if (kind === "conversion") {
     const lcp = i.speed?.cwv?.lcpMs ?? null;
-    if (lcp != null) add(`Mobile LCP: ${(lcp / 1000).toFixed(1)}s`, "PageSpeed");
+    if (lcp != null) add(`Mobile load time: ${(lcp / 1000).toFixed(1)}s on a typical phone connection`, "PageSpeed");
     if (!s.has_booking_widget) add("No online booking widget detected", "crawl");
   }
   return out;
@@ -99,9 +99,9 @@ function cwvRows(speed: SpeedResult | null): ClientPayload["cwv"] {
   const cwv = speed?.cwv;
   if (!cwv) return [];
   const rows: ClientPayload["cwv"] = [];
-  if (cwv.lcpMs != null) rows.push({ metric: "LCP", good: "≤2.5s", actual: `${(cwv.lcpMs / 1000).toFixed(1)}s` });
-  if (cwv.inpMs != null) rows.push({ metric: "INP", good: "≤200ms", actual: `${Math.round(cwv.inpMs)}ms` });
-  if (cwv.cls != null) rows.push({ metric: "CLS", good: "≤0.1", actual: cwv.cls.toFixed(2) });
+  if (cwv.lcpMs != null) rows.push({ metric: "Mobile load speed", good: "under 2.5s", actual: `${(cwv.lcpMs / 1000).toFixed(1)}s` });
+  if (cwv.inpMs != null) rows.push({ metric: "Tap response", good: "under 200ms", actual: `${Math.round(cwv.inpMs)}ms` });
+  if (cwv.cls != null) rows.push({ metric: "Visual stability", good: "under 0.1", actual: cwv.cls.toFixed(2) });
   return rows;
 }
 
